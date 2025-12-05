@@ -879,6 +879,39 @@
             drawChart();
             clearForm();
             showNotification('✅ Projekt hinzugefügt!', 'success');
+
+            // --- SEND PROJECT TO MAKE.COM WEBHOOK ---
+try {
+    fetch("HIER_DEINE_WEBHOOK_URL_EINFÜGEN", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            id: project.id,
+            name: project.name,
+            department: project.department,
+            notes: project.notes,
+            marktwert: project.marktwert,
+            musthave: project.musthave,
+            technisch: project.technisch,
+            finanziell: project.finanziell,
+            zeitlich: project.zeitlich,
+            impact: project.impact,
+            effort: project.effort,
+            score_total: (
+                project.marktwert +
+                project.musthave +
+                project.technisch +
+                project.finanziell +
+                project.zeitlich
+            )
+        })
+    })
+    .then(res => console.log("Webhook gesendet:", res.status))
+    .catch(err => console.error("Webhook Fehler:", err));
+} catch (e) {
+    console.error("Webhook-Fehler:", e);
+}
+
         }
 
         function deleteProject(id) {
@@ -1412,6 +1445,7 @@
     </script>
 </body>
 </html>
+
 
 
 
